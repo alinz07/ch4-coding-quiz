@@ -23,7 +23,6 @@ header {
 
 .q-and-a {
     list-style-position: inside;
-    width: 40%;
 }
 
 .q-and-a h1 {
@@ -33,6 +32,16 @@ header {
 
 .q-and-a ol {
     padding-inline-start: 0;
+    width: 40%
+}
+
+.selectable {
+    background-color: navy;
+    color: white;
+}
+.selectable:hover {
+    background-color: purple;
+    color: white;
 }
 
 .correctness h2 {
