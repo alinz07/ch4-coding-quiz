@@ -1,6 +1,55 @@
+//create question objects
+var questionOne = {
+    question: "A very useful tool used during development and debugging for printing content to the debugger is:",
+    1: "Javascript",
+    2: "terminal/bash",
+    3: "for loops",
+    4: "console.log",
+    correct: 4,
+    questionID: 1
+};
+var questionTwo = {
+    question: "Arrays in Javascript can be used to store _______.",
+    answerOne: "numbers and strings",
+    asnwerTwo: "other arrays",
+    answerThree: "booleans",
+    answerFour: "all of the above",
+    correct: 4,
+    questionID: 2
+};
+var questionThree = {
+    question: "String values must be enclosed within _______ when being assigned to variables.",
+    answerOne: "commas",
+    asnwerTwo: "curly brackets",
+    answerThree: "quotes",
+    answerFour: "parenthesis",
+    correct: 3,
+    questionID: 3
+};
+var questionFour = {
+    question: "Commonly used data types DO NOT include:",
+    answerOne: "strings",
+    asnwerTwo: "booleans",
+    answerThree: "alerts",
+    answerFour: "numbers",
+    correct: 3,
+    questionID: 4
+};
+var questionFive = {
+    question: "The condition in an if / else statement is enclosed with ________.",
+    answerOne: "quotes",
+    asnwerTwo: "curly brackets",
+    answerThree: "parenthesis",
+    answerFour: "square brackets",
+    correct: 3,
+    questionID: 5
+};
+
+var questions = [questionOne, questionTwo, questionThree, questionFour, questionFive];
+
 var myTimer = document.querySelector("#timer");
 var timer = 60;
-var questionNumber = 1;
+var questionNumber = 0;
 var mainSection = document.querySelector(".main");
 
 
@@ -10,7 +59,7 @@ var startToQuestions = function (event) {
     //console.log(targetEl);
 
     var generateAnswers = function(questionNumber) {
-        
+
         var answerList = document.createElement("ol");
         
         var whichQuestion = questions[questionNumber] 
@@ -91,54 +140,6 @@ var startToQuestions = function (event) {
 //         </div>
 
 
-//create question objects
-var questionOne = {
-    question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-    1: "Javascript",
-    2: "terminal/bash",
-    3: "for loops",
-    3: "console.log",
-    correct: 4,
-    questionID: 1
-};
-var questionTwo = {
-    question: "Arrays in Javascript can be used to store _______.",
-    answerOne: "numbers and strings",
-    asnwerTwo: "other arrays",
-    answerThree: "booleans",
-    answerFour: "all of the above",
-    correct: 4,
-    questionID: 2
-};
-var questionThree = {
-    question: "String values must be enclosed within _______ when being assigned to variables.",
-    answerOne: "commas",
-    asnwerTwo: "curly brackets",
-    answerThree: "quotes",
-    answerFour: "parenthesis",
-    correct: 3,
-    questionID: 3
-};
-var questionFour = {
-    question: "Commonly used data types DO NOT include:",
-    answerOne: "strings",
-    asnwerTwo: "booleans",
-    answerThree: "alerts",
-    answerFour: "numbers",
-    correct: 3,
-    questionID: 4
-};
-var questionFive = {
-    question: "The condition in an if / else statement is enclosed with ________.",
-    answerOne: "quotes",
-    asnwerTwo: "curly brackets",
-    answerThree: "parenthesis",
-    answerFour: "square brackets",
-    correct: 3,
-    questionID: 5
-};
-
-var questions = [questionOne, questionTwo, questionThree, questionFour, questionFive];
 
 var startTimer = function() {
     var timerInterval = setInterval(function() {
