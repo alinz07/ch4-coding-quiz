@@ -1,84 +1,103 @@
 var myTimer = document.querySelector("#timer");
 var timer = 60;
 var questionNumber = 1;
-var sectionEl = document.createElement("section");
-var mainSection = document.querySelector("#main-section");
-var writeQuestion = document.createElement("h1");
+var mainSection = document.querySelector(".main");
 
 
-
-
-
-
-var startToQuestions = function(event) {
+var startToQuestions = function (event) {
     //when you click the start button, clear the main contents and pull up the first question
-    var targetEl =event.target;
+    var targetEl = event.target;
+    //console.log(targetEl);
 
-    if (targetEl.matches(".start-button")) {
-        clearMain();
-        mainSection.className = "main-for-questions"
-        sectionEl.className = "q-and-a"
-
-        startTimer();
-
+    var generateAnswers = function(questionNumber) {
+        
+        var answerList = document.createElement("ol");
+        
+        var whichQuestion = questions[questionNumber] 
+    
+        for (var i =1; i<5; i++) {
+            var answer = document.createElement("li");
+            answer.className = "answer selectable";
+            answer.innerHTML = whichQuestion[i];
+            answerList.appendChild(answer)
+        }
+    
+        sectionEl.appendChild(answerList)
     }
 
+    if (targetEl.matches(".start-button")) {
 
+        clearMain();
 
+        mainSection.className = "main-for-questions"
 
-    mainSection.appendChild(sectionEl)
+        var sectionEl = document.createElement("section");
+        sectionEl.className = "q-and-a"
+
+        //write another function to generate question and use questionNumber counter
+        var h1El = document.createElement("h1");
+        h1El.className = "question-text";
+        h1El.innerHTML = "How many licks does it take to get to the center of a tootsie pop?"
+        sectionEl.appendChild(h1El);
+
+        generateAnswers(questionNumber);
+
+        mainSection.appendChild(sectionEl)
+
+        startTimer();
+    }
 }
 
 
-<!-- for question and answer -->
-        <section class="q-and-a">
+// <!-- for question and answer -->
+//         <section class="q-and-a">
 
-            <h1 class="question-text">How many licks does it take to get to the center of a tootsie pop?</h1>
+//             <h1 class="question-text">How many licks does it take to get to the center of a tootsie pop?</h1>
 
-            <ol>
+//             <ol>
 
-                <li class="answer selectable">
+//                 <li class="answer selectable">
 
-                    answer one
+//                     answer one
 
-                </li>
+//                 </li>
 
-                <li class="answer selectable">
+//                 <li class="answer selectable">
 
-                    answer two
+//                     answer two
     
-                </li>
+//                 </li>
 
-                <li class="answer selectable">
+//                 <li class="answer selectable">
 
-                    answer three
+//                     answer three
     
-                </li>
+//                 </li>
 
-                <li class="answer selectable">
+//                 <li class="answer selectable">
 
-                    answer four
+//                     answer four
     
-                </li>
+//                 </li>
 
-            </ol>
+//             </ol>
 
-        </section>
+//         </section>
 
-        <div class="correctness">
+//         <div class="correctness">
 
-            <h2>Wrong!</h2>
+//             <h2>Wrong!</h2>
 
-        </div>
+//         </div>
 
 
 //create question objects
 var questionOne = {
     question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-    answerOne: "Javascript",
-    asnwerTwo: "terminal/bash",
-    answerThree: "for loops",
-    answerFour: "console.log",
+    1: "Javascript",
+    2: "terminal/bash",
+    3: "for loops",
+    3: "console.log",
     correct: 4,
     questionID: 1
 };
@@ -152,9 +171,7 @@ var changeQuestion = function() {
 }
 
 var clearMain = function() {
-    //i want to remove the contents of the main section so that in the transition I can just change the class name for styles
-    //and append the already styled elements.
-    main.remove();
+    mainSection.innerHTML="";
     //maybe do if statements and keep track of the state because not just the main element changes. I think there are three
     //total different layouts. or maybe have different functions for the different transitions that run the clearMain function.
 }
@@ -163,6 +180,5 @@ var clearMain = function() {
     
 
 //when I click a button to move on from the question slides
-//section classname=q-and-a.remove() and div classname = correctness.remove()
 
-mainSection.addEventListener("click", startToQuestions());
+mainSection.addEventListener("click", startToQuestions);

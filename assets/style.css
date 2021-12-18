@@ -19,15 +19,11 @@ header {
 
 .main {
     width: 100%;
+    margin: 5% 0 25% 0;
 }
 
 .main-for-questions {
     margin: 5% 10% 20% 25%;
-}
-
-#main-section {
-    /* for .main-for-questions i used percent margins, let's see how setting pixel height works. Seems easier but not sure how media queries will look */
-    margin: 5% 0 25% 0;
 }
 
 .start-page-head-and-prompt {
