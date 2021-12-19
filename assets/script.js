@@ -10,37 +10,37 @@ var questionOne = {
 };
 var questionTwo = {
     question: "Arrays in Javascript can be used to store _______.",
-    answerOne: "numbers and strings",
-    asnwerTwo: "other arrays",
-    answerThree: "booleans",
-    answerFour: "all of the above",
+    1: "numbers and strings",
+    2: "other arrays",
+    3: "booleans",
+    4: "all of the above",
     correct: 4,
     questionID: 2
 };
 var questionThree = {
     question: "String values must be enclosed within _______ when being assigned to variables.",
-    answerOne: "commas",
-    asnwerTwo: "curly brackets",
-    answerThree: "quotes",
-    answerFour: "parenthesis",
+    1: "commas",
+    2: "curly brackets",
+    3: "quotes",
+    4: "parenthesis",
     correct: 3,
     questionID: 3
 };
 var questionFour = {
     question: "Commonly used data types DO NOT include:",
-    answerOne: "strings",
-    asnwerTwo: "booleans",
-    answerThree: "alerts",
-    answerFour: "numbers",
+    1: "strings",
+    2: "booleans",
+    3: "alerts",
+    4: "numbers",
     correct: 3,
     questionID: 4
 };
 var questionFive = {
     question: "The condition in an if / else statement is enclosed with ________.",
-    answerOne: "quotes",
-    asnwerTwo: "curly brackets",
-    answerThree: "parenthesis",
-    answerFour: "square brackets",
+    1: "quotes",
+    2: "curly brackets",
+    3: "parenthesis",
+    4: "square brackets",
     correct: 3,
     questionID: 5
 };
@@ -52,11 +52,24 @@ var timer = 60;
 var questionNumber = 0;
 var mainSection = document.querySelector(".main");
 
+var questionAndAnswers = function(questionNumber) {
+    //replaces the contents of the .main with ""
+    clearMain();
 
-var startToQuestions = function (event) {
-    //when you click the start button, clear the main contents and pull up the first question
-    var targetEl = event.target;
-    //console.log(targetEl);
+    //add the styled question and answers to the newly recreated section element.
+    mainSection.className = "main-for-questions";
+    var sectionEl = document.createElement("section");
+    sectionEl.className = "q-and-a";
+    mainSection.appendChild(sectionEl)
+
+    var getQuestion = function(questionNumber) {
+        var h1El = document.createElement("h1");
+        var questionObj = questions[questionNumber];
+        h1El.className = "question-text";
+        h1El.innerHTML = questionObj.question;
+        sectionEl.appendChild(h1El);
+        questionNumber++;
+    }
 
     var generateAnswers = function(questionNumber) {
 
@@ -74,28 +87,28 @@ var startToQuestions = function (event) {
         sectionEl.appendChild(answerList)
     }
 
+    getQuestion(questionNumber);
+    generateAnswers(questionNumber);
+
+    var correctnessDiv = document.createElement("div");
+    correctnessDiv.className = "correctness";
+    correctnessDiv.innerHTML = "";
+    sectionEl.appendChild(correctnessDiv);
+}
+
+var startToQuestions = function (event) {
+    //when you click the start button, clear the main contents and pull up the first question
+    var targetEl = event.target;
+
     if (targetEl.matches(".start-button")) {
 
-        clearMain();
-
-        mainSection.className = "main-for-questions"
-
-        var sectionEl = document.createElement("section");
-        sectionEl.className = "q-and-a"
-
-        //write another function to generate question and use questionNumber counter
-        var h1El = document.createElement("h1");
-        h1El.className = "question-text";
-        h1El.innerHTML = "How many licks does it take to get to the center of a tootsie pop?"
-        sectionEl.appendChild(h1El);
-
-        generateAnswers(questionNumber);
-
-        mainSection.appendChild(sectionEl)
+        questionAndAnswers(questionNumber);
 
         startTimer();
     }
 }
+
+//then determine correctness using an event listener listening for a click on an answer that then creates another transition to the next question slide.
 
 
 // <!-- for question and answer -->
