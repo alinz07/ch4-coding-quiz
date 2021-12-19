@@ -81,6 +81,7 @@ var questionAndAnswers = function(questionNumber) {
             var answer = document.createElement("li");
             answer.className = "answer selectable";
             answer.innerHTML = whichQuestion[i];
+            answer.id = i;
             answerList.appendChild(answer)
         }
     
@@ -166,15 +167,30 @@ var startTimer = function() {
     }, 1000)
 }
 
-var correctCheck = function() {
-    //when one of the .answer class is clicked, display wrong or incorrect in .correctness dispatchEvent
-    if (questionNumber > 6) {
-        //we want to transition to the all done slide and clear the q-and-a, answers and correctness content
-        clearMain();
-    }
+var correctCheck = function(event) {
+    
+    var targetEl = event.target;
+    var questionObj = questions[questionNumber];
+    var correctAnswerId= questionObj.correct;
+    var answerID = targetEl.id;
+    console.log(answerID);
+    console.log(correctAnswerId);
+    console.log(targetEl);
 
-    else {
-        changeQuestion();
+    //when one of the .answer class is clicked, display wrong or incorrect in .correctness dispatchEvent
+    
+    
+    // if (questionNumber > 4) {
+    //     //clear the contents of the main section to prep for transition
+    //     clearMain();
+    //     //create function to transition to all done
+    // }
+
+
+    if (targetEl.matches(".answer") && answerID==correctAnswerId) {
+        console.log('yes');
+        
+        // changeQuestion();
     }
 }
 
@@ -196,3 +212,5 @@ var clearMain = function() {
 //when I click a button to move on from the question slides
 
 mainSection.addEventListener("click", startToQuestions);
+
+mainSection.addEventListener("click", correctCheck);
