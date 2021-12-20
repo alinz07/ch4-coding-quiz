@@ -68,7 +68,6 @@ var questionAndAnswers = function(questionNumber) {
         h1El.className = "question-text";
         h1El.innerHTML = questionObj.question;
         sectionEl.appendChild(h1El);
-        questionNumber++;
     }
 
     var generateAnswers = function(questionNumber) {
@@ -109,52 +108,6 @@ var startToQuestions = function (event) {
     }
 }
 
-//then determine correctness using an event listener listening for a click on an answer that then creates another transition to the next question slide.
-
-
-// <!-- for question and answer -->
-//         <section class="q-and-a">
-
-//             <h1 class="question-text">How many licks does it take to get to the center of a tootsie pop?</h1>
-
-//             <ol>
-
-//                 <li class="answer selectable">
-
-//                     answer one
-
-//                 </li>
-
-//                 <li class="answer selectable">
-
-//                     answer two
-    
-//                 </li>
-
-//                 <li class="answer selectable">
-
-//                     answer three
-    
-//                 </li>
-
-//                 <li class="answer selectable">
-
-//                     answer four
-    
-//                 </li>
-
-//             </ol>
-
-//         </section>
-
-//         <div class="correctness">
-
-//             <h2>Wrong!</h2>
-
-//         </div>
-
-
-
 var startTimer = function() {
     var timerInterval = setInterval(function() {
         if (timer >= 0) {
@@ -173,12 +126,13 @@ var correctCheck = function(event) {
     var questionObj = questions[questionNumber];
     var correctAnswerId= questionObj.correct;
     var answerID = targetEl.id;
+    var correctnessDiv = document.querySelector(".correctness")
     console.log(answerID);
     console.log(correctAnswerId);
     console.log(targetEl);
 
     //when one of the .answer class is clicked, display wrong or incorrect in .correctness dispatchEvent
-    
+    //integrate the logic below and also find a way to keep the content of the correctness dive.
     
     // if (questionNumber > 4) {
     //     //clear the contents of the main section to prep for transition
@@ -188,16 +142,19 @@ var correctCheck = function(event) {
 
 
     if (targetEl.matches(".answer") && answerID==correctAnswerId) {
-        console.log('yes');
-        
-        // changeQuestion();
+        correctnessDiv.innerHTML = "Correct!";        
+        changeQuestion();
+    }
+
+    else if (targetEl.matches(".answer") && answerID!=correctAnswerId) {
+        correctnessDiv.innerHTML = "Wrong";
+        changeQuestion();
     }
 }
 
 var changeQuestion = function() {
-    //display correctness of previous question
-
-
+    questionNumber++;
+    questionAndAnswers(questionNumber);
 }
 
 var clearMain = function() {
