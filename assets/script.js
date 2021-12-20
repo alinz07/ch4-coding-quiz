@@ -105,7 +105,7 @@ var startToQuestions = function (event) {
 
 var startTimer = function() {
     var timerInterval = setInterval(function() {
-        if (timer >= 0) {
+        if (questionNumber < 6) {
             myTimer.innerHTML = "Time: " + timer;
             timer --;
         }
@@ -124,39 +124,36 @@ var createCorrectnessDiv = function() {
 }
 
 var correctCheck = function(event) {
-    
+    //when one of the .answer class is clicked, display wrong or incorrect in .correctness div
     var targetEl = event.target;
     var questionObj = questions[questionNumber];
     var correctAnswerId= questionObj.correct;
     var answerID = targetEl.id;
-    var correctnessDiv = document.querySelector(".correctness")
-    // console.log(answerID);
-    // console.log(correctAnswerId);
-    // console.log(targetEl);
-
-    //when one of the .answer class is clicked, display wrong or incorrect in .correctness dispatchEvent
-    //integrate the logic below and also find a way to keep the content of the correctness div.
-    
-    // if (questionNumber > 4) {
-    //     //clear the contents of the main section to prep for transition
-    //     clearMain();
-    //     //create function to transition to all done
-    // }
 
     if (targetEl.matches(".answer") && answerID==correctAnswerId) {
-        clearMain();
-        changeQuestion();
-        createCorrectnessDiv();
+        correctTransitionHelper();
         var correctnessDiv = document.querySelector(".correctness");
-        correctnessDiv.innerHTML = "Correct!";     
+        correctnessDiv.innerHTML = "Correct!";    
     }
 
     else if (targetEl.matches(".answer") && answerID!=correctAnswerId) {
+        correctTransitionHelper();
+        var correctnessDiv = document.querySelector(".correctness");
+        correctnessDiv.innerHTML = "Wrong!";
+    }
+
+    endGameCheck();
+}
+
+var correctTransitionHelper = function() {
+    if (questionNumber==4) {
+        createCorrectnessDiv();
+        questionNumber++;   
+    }
+    else {
         clearMain();
         changeQuestion();
         createCorrectnessDiv();
-        var correctnessDiv = document.querySelector(".correctness");
-        correctnessDiv.innerHTML = "Wrong!";
     }
 }
 
@@ -167,19 +164,53 @@ var changeQuestion = function() {
 
 var clearMain = function() {
     mainSection.innerHTML="";
-    //maybe do if statements and keep track of the state because not just the main element changes. I think there are three
-    //total different layouts. or maybe have different functions for the different transitions that run the clearMain function.
 }
 
-// var clearSection = function() {
-//     a=document.querySelector(".q-and-a");
-//     a.innerHTML = "";
-// }
+var endGameCheck = function() {
+    if (questionNumber==5) {
+        questionNumber++;
+        allDone()//figure out how to delay this function until the user clicks next or so that the user has time to see
+        //if the answer was correct or wrong. I don't remember how the mockup transitions.
+    }
+}
 
+var allDone = function() {
+    clearMain();
+    var allDoneMain = document.querySelector("#main-section");
+
+    //put all done in h1
+    var h1El = document.createElement("h1");
+    h1El.innerText = "All done!";
+    allDoneMain.appendChild(h1El); 
+
+    //put "Your final score is " + timer
+    var h2El = document.createElement("h2");
+    h2El.innerText = "Your final score is " + (timer+1) + ".";
+    allDoneMain.appendChild(h2El);
+
+    //create enter initials input and button in form to record response
+    formElDiv = document.createElement("div");
+    allDoneMain.appendChild(formElDiv);
+
+    formEl = document.createElement("form");
+    formElDiv.appendChild(formEl);
+
+    formElH2 = document.createElement("h2");
+    formElH2.innerText = "Enter Initials: ";
+    formEl.appendChild(formElH2);
+
+    formElInput = document.createElement("div");
+    formElInput.innerHTML = "<input type='text' name='player-initials' placeholder='Enter initials'/>";
+    formEl.appendChild(formElInput);
     
+    // formElButton = document.createElement("button");
+
+}
 
 //when I click a button to move on from the question slides
 
 mainSection.addEventListener("click", startToQuestions);
+
+//when I select an answer to a question
 
 mainSection.addEventListener("click", correctCheck);
