@@ -53,10 +53,7 @@ var questionNumber = 0;
 var mainSection = document.querySelector(".main");
 
 var questionAndAnswers = function(questionNumber) {
-    //replaces the contents of the .main with ""
-    clearMain();
 
-    //add the styled question and answers to the newly recreated section element.
     mainSection.className = "main-for-questions";
     var sectionEl = document.createElement("section");
     sectionEl.className = "q-and-a";
@@ -83,17 +80,13 @@ var questionAndAnswers = function(questionNumber) {
             answer.id = i;
             answerList.appendChild(answer)
         }
-    
+            
+        //add the styled question and answers to the newly recreated section element.
         sectionEl.appendChild(answerList)
     }
 
     getQuestion(questionNumber);
     generateAnswers(questionNumber);
-
-    var correctnessDiv = document.createElement("div");
-    correctnessDiv.className = "correctness";
-    correctnessDiv.innerHTML = "";
-    sectionEl.appendChild(correctnessDiv);
 }
 
 var startToQuestions = function (event) {
@@ -101,6 +94,8 @@ var startToQuestions = function (event) {
     var targetEl = event.target;
 
     if (targetEl.matches(".start-button")) {
+
+        clearMain();
 
         questionAndAnswers(questionNumber);
 
@@ -120,6 +115,14 @@ var startTimer = function() {
     }, 1000)
 }
 
+
+var createCorrectnessDiv = function() {
+    var correctnessDiv = document.createElement("div");
+    correctnessDiv.className = "correctness";
+    correctnessDiv.innerHTML = "";
+    mainSection.appendChild(correctnessDiv);
+}
+
 var correctCheck = function(event) {
     
     var targetEl = event.target;
@@ -127,12 +130,12 @@ var correctCheck = function(event) {
     var correctAnswerId= questionObj.correct;
     var answerID = targetEl.id;
     var correctnessDiv = document.querySelector(".correctness")
-    console.log(answerID);
-    console.log(correctAnswerId);
-    console.log(targetEl);
+    // console.log(answerID);
+    // console.log(correctAnswerId);
+    // console.log(targetEl);
 
     //when one of the .answer class is clicked, display wrong or incorrect in .correctness dispatchEvent
-    //integrate the logic below and also find a way to keep the content of the correctness dive.
+    //integrate the logic below and also find a way to keep the content of the correctness div.
     
     // if (questionNumber > 4) {
     //     //clear the contents of the main section to prep for transition
@@ -140,15 +143,20 @@ var correctCheck = function(event) {
     //     //create function to transition to all done
     // }
 
-
     if (targetEl.matches(".answer") && answerID==correctAnswerId) {
-        correctnessDiv.innerHTML = "Correct!";        
+        clearMain();
         changeQuestion();
+        createCorrectnessDiv();
+        var correctnessDiv = document.querySelector(".correctness");
+        correctnessDiv.innerHTML = "Correct!";     
     }
 
     else if (targetEl.matches(".answer") && answerID!=correctAnswerId) {
-        correctnessDiv.innerHTML = "Wrong";
+        clearMain();
         changeQuestion();
+        createCorrectnessDiv();
+        var correctnessDiv = document.querySelector(".correctness");
+        correctnessDiv.innerHTML = "Wrong!";
     }
 }
 
@@ -163,6 +171,10 @@ var clearMain = function() {
     //total different layouts. or maybe have different functions for the different transitions that run the clearMain function.
 }
 
+// var clearSection = function() {
+//     a=document.querySelector(".q-and-a");
+//     a.innerHTML = "";
+// }
 
     
 
