@@ -72,3 +72,12 @@ header {
     border-top: 1px solid gray;
     font-weight: initial;
 }
+
+.submit-initials {
+  outline: none;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 3px var(--grey);
+  width:fit-content;
+  height: fit-content;
+}

@@ -192,18 +192,26 @@ var allDone = function() {
     formElDiv = document.createElement("div");
     allDoneMain.appendChild(formElDiv);
 
+    //create a form element for form css and methods
     formEl = document.createElement("form");
     formElDiv.appendChild(formEl);
 
+    //create h2 prompt to enter initials
     formElH2 = document.createElement("h2");
     formElH2.innerText = "Enter Initials: ";
     formEl.appendChild(formElH2);
 
-    formElInput = document.createElement("div");
-    formElInput.innerHTML = "<input type='text' name='player-initials' placeholder='Enter initials'/>";
+    //create a div to put the input in because I don't
+    formElInput = document.createElement("input");
+    formElInput.setAttribute('type', 'text')
+    formElInput.setAttribute('name', 'player-initials')
+    formElInput.setAttribute('placeholder', 'Enter initials');
     formEl.appendChild(formElInput);
     
-    // formElButton = document.createElement("button");
+    formElButton = document.createElement("button");
+    formElButton.textContent = "Submit";
+    formElButton.className = "submit-initials selectable";
+    formEl.appendChild(formElButton);
 
 }
 
