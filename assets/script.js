@@ -47,10 +47,14 @@ var questionFive = {
 
 var questions = [questionOne, questionTwo, questionThree, questionFour, questionFive];
 var scoreList = [];
-var myTimer = document.querySelector("#timer");
 var timer = 60;
 var questionNumber = 0;
+var scoreCounter = 0;
+var myTimer = document.querySelector("#timer");
 var mainSection = document.querySelector(".main");
+var vhsAndTimer = document.querySelector(".header");
+
+
 
 var questionAndAnswers = function(questionNumber) {
 
@@ -180,11 +184,38 @@ var clearMain = function() {
 }
 
 var clearHeader = function() {
-    //finish this
+    
 }
 
-var saveSCores = function() {
-    //finish this
+var saveScores = function() {
+    localStorage.setItem("scoreList", JSON.stringify(scoreList));
+}
+
+var loadScores = function() {
+
+    scoreList=localStorage.getItem("scoreList");
+
+    scoreList=JSON.parse(scoreList);
+
+    var sortedList = scoreList.sort((a,b ) => {
+        return (a.score < b.score) ? 1 : -1
+    });
+
+    console.log(sortedList);
+
+    // var numberOfScoresOnPage = 0;
+    // var allDoneMain = document.querySelector("#main-section");
+    // var highScoreSection = document.createElement("section");
+
+    // for (var i=0; i<10; i++) {
+        
+    //     var scoreDiv = document.createElement("div");
+    //     //find a way to add rank. initials - score
+    //     scoreDiv.innerHTML = ""
+    //     highScoreSection.append(scoreDiv);
+    // }
+
+    // allDoneMain.appendChild(highScoreSection)
 }
 
 var endGameCheck = function() {
@@ -243,11 +274,18 @@ var highScores = function(event) {
 
     event.preventDefault();
 
-    saveScores();
-
     var submitEl = event.target;
+
     var initialsInput = document.querySelector("input[name='player-initials']").value;
-    var currentScore = document.querySelector("input[")
+    // var currentScore = timer;
+
+    var scoreObject = {
+        initials: initialsInput,
+        score: timer,
+        id: scoreCounter,
+    };
+
+    scoreCounter+=1;
 
     //if you click on the submit button on the all done page, transition to high scores page
     if (submitEl.matches('.submit-initials')) {
@@ -257,21 +295,21 @@ var highScores = function(event) {
 
         //create h1 for highscores
         var h1El = document.createElement("h1");
-        h1El.innerText = "High Scores!";
+        h1El.innerText = "High Scores";
         allDoneMain.appendChild(h1El);
 
-        //create div to display high score and initials
-        var highScoreSection = document.createElement("section");
+        scoreList.push(scoreObject);
+
+        saveScores();
+
+        //create section and divs to display high scores and initials
+        loadScores();
+
 
         // if timer is less than all the other values in scoreList
 
 
-        for (var i=0; i<scoreList.length; i++) {
-            var scoreDiv = document.createElement("div");
-            //find a way to add rank. initials - score
-            scoreDiv.innerHTML = ""
-            highScoreSection.append(scoreDiv);
-        }
+        
 
         //create go back button an link it to the entering your initials page
 
