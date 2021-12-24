@@ -46,6 +46,7 @@ var questionFive = {
 };
 
 var questions = [questionOne, questionTwo, questionThree, questionFour, questionFive];
+//create an empty list to store scores for sorting, setting, getting and displaying on the high scores page
 var scoreList = [];
 var timer = 60;
 var questionNumber = 0;
@@ -54,7 +55,20 @@ var myTimer = document.querySelector("#timer");
 var mainSection = document.querySelector(".main");
 var vhsAndTimer = document.querySelector(".header");
 
+//when you click the start button, clear the main contents and transition to the first question slide
+var startToQuestions = function (event) {
 
+    var targetEl = event.target;
+
+    if (targetEl.matches(".start-button")) {
+
+        clearMain();
+
+        questionAndAnswers(questionNumber);
+
+        startTimer();
+    }
+}
 
 var questionAndAnswers = function(questionNumber) {
 
@@ -93,20 +107,6 @@ var questionAndAnswers = function(questionNumber) {
     generateAnswers(questionNumber);
 }
 
-var startToQuestions = function (event) {
-    //when you click the start button, clear the main contents and pull up the first question
-    var targetEl = event.target;
-
-    if (targetEl.matches(".start-button")) {
-
-        clearMain();
-
-        questionAndAnswers(questionNumber);
-
-        startTimer();
-    }
-}
-
 var startTimer = function() {
     var timerInterval = setInterval(function() {
         if (questionNumber < 6) {
@@ -119,31 +119,22 @@ var startTimer = function() {
     }, 1000)
 }
 
-
-var createCorrectnessDiv = function() {
-    var correctnessDiv = document.createElement("div");
-    correctnessDiv.className = "correctness";
-    correctnessDiv.innerHTML = "";
-    mainSection.appendChild(correctnessDiv);
-}
-
+//when one of the .answer class elements is clicked, display correct or wrong in .correctness div
 var correctCheck = function(event) {
-
-    //after work, pick up here, we're going to do an if check to see if the event.target
-    //is an answer class. this should allow the submit button to only activate
-    //high scores event. this solves our bubbling issue and the console log
-    //error from it trying to do a correct check and the questionObj of an array
-    //that doesn't have anything in the 6 index.
-    //when one of the .answer class is clicked, display wrong or incorrect in .correctness div
 
     var targetEl = event.target;
 
+    //this prevents console errors because the submit initials and initials input elements are
+    //also in the mainSection and will trigger that event listener, and iterate the questionNumber
+    //variable higher than the number of objects in the questions array.
     if (targetEl.matches(".submit-initials") || targetEl.matches(".initials-input")) {
         return;
     }
+
+    //check if the selected answer is correct
     else {
-        var answerID = targetEl.id;
         var questionObj = questions[questionNumber];
+        var answerID = targetEl.id;
         var correctAnswerId= questionObj.correct;
 
         if (targetEl.matches(".answer") && answerID==correctAnswerId) {
@@ -158,10 +149,23 @@ var correctCheck = function(event) {
             correctnessDiv.innerHTML = "Wrong!";
         }
 
+        //if it was the last question in the quiz, we want to transition to all done page
         endGameCheck();
     } 
 }
 
+//create a div to go under the questions that sticks around after the question
+//slide transitions.
+var createCorrectnessDiv = function() {
+    var correctnessDiv = document.createElement("div");
+    correctnessDiv.className = "correctness";
+    correctnessDiv.innerHTML = "";
+    mainSection.appendChild(correctnessDiv);
+}
+
+//for the first 4 questions we want to clearmain, change the question and create a correctness
+//div to display if your last response was correct or not. for the last question we keep
+//the contents on the page
 var correctTransitionHelper = function() {
     if (questionNumber==4) {
         createCorrectnessDiv();
@@ -174,48 +178,17 @@ var correctTransitionHelper = function() {
     }
 }
 
-var changeQuestion = function() {
-    questionNumber++;
-    questionAndAnswers(questionNumber);
-}
-
 var clearMain = function() {
     mainSection.innerHTML="";
 }
 
 var clearHeader = function() {
-    
+    vhsAndTimer.innerHTML="";
 }
 
-var saveScores = function() {
-    localStorage.setItem("scoreList", JSON.stringify(scoreList));
-}
-
-var loadScores = function() {
-
-    scoreList=localStorage.getItem("scoreList");
-
-    scoreList=JSON.parse(scoreList);
-
-    var sortedList = scoreList.sort((a,b ) => {
-        return (a.score < b.score) ? 1 : -1
-    });
-
-    console.log(sortedList);
-
-    // var numberOfScoresOnPage = 0;
-    // var allDoneMain = document.querySelector("#main-section");
-    // var highScoreSection = document.createElement("section");
-
-    // for (var i=0; i<10; i++) {
-        
-    //     var scoreDiv = document.createElement("div");
-    //     //find a way to add rank. initials - score
-    //     scoreDiv.innerHTML = ""
-    //     highScoreSection.append(scoreDiv);
-    // }
-
-    // allDoneMain.appendChild(highScoreSection)
+var changeQuestion = function() {
+    questionNumber++;
+    questionAndAnswers(questionNumber);
 }
 
 var endGameCheck = function() {
@@ -228,6 +201,17 @@ var endGameCheck = function() {
 
 //dynamically alter html for transition to all done page
 var allDone = function() {
+
+    var display = '';
+    var correctOrNot = document.querySelector(".correctness");
+
+    if (correctOrNot.innerText =="Correct!") {
+        display = 'c';
+    }
+    else {
+        display = 'w';
+    }
+
     clearMain();
     var allDoneMain = document.querySelector("#main-section");
 
@@ -263,60 +247,129 @@ var allDone = function() {
     formElInput.setAttribute('placeholder', 'Enter initials');
     formEl.appendChild(formElInput);
     
+    //create a button to add to the form
     formElButton = document.createElement("button");
     formElButton.textContent = "Submit";
     formElButton.className = "submit-initials selectable";
     formEl.appendChild(formElButton);
+
+    //create a div to display if the response to the final question was correct or not
+    createCorrectnessDiv();
+
+    if (display ==='c') {
+        correctOrNot.innerText = "Correct!";
+    }
+    else {
+        correctOrNot.innerText = "Wrong!";
+    }
+
+    allDoneMain.appendChild(correctOrNot);
+}
+
+var saveScores = function() {
+    localStorage.setItem("scoreList", JSON.stringify(scoreList));
+    localStorage.setItem("scoreCounter", JSON.stringify(scoreCounter));
+}
+
+var loadScores = function() {
+
+    scoreCounter=localStorage.getItem("scoreCounter");
+
+    if (!scoreCounter) {
+        scoreCounter=0;
+    }
+    else {
+        scoreCounter=JSON.parse(scoreCounter);
+    }
+
+    scoreList=localStorage.getItem("scoreList");
+
+    if (!scoreList) {
+        scoreList=[];
+    }
+    else {
+        scoreList = JSON.parse(scoreList);
+    }
+ 
+
+
+    //we dont want the html to generate when we load scores upon loading the
+    //landing page
+    // if (questionNumber===0 || !scoreList) {
+    //     return false;
+    // }
+    // else {
+    //     scoreList=localStorage.getItem("scoreList");
+    //     console.log(scoreList);
+    // }    
+
+        // if timer is less than all the other values in scoreList
+
+        // var numberOfScoresOnPage = 0;
+        // var allDoneMain = document.querySelector("#main-section");
+        // var highScoreSection = document.createElement("section");
+
+        // for (var i=0; i<10; i++) {
+
+        //     var scoreDiv = document.createElement("div");
+        //     //find a way to add rank. initials - score
+        //     scoreDiv.innerHTML = ""
+        //     highScoreSection.append(scoreDiv);
+        // }
+
+        // allDoneMain.appendChild(highScoreSection)
+}
+
+var updateScores = function () {
+    //
 }
 
 //dynamically alter html for transition to highscores page
 var highScores = function(event) {
 
+    debugger;
+
+    //so the page doesn't auto reload upon submit event
     event.preventDefault();
 
-    var submitEl = event.target;
+    //get list of high scores from local storage
+    loadScores();
 
+    //take the user input and use it to help create an object to add to scoreList array
     var initialsInput = document.querySelector("input[name='player-initials']").value;
-    // var currentScore = timer;
 
     var scoreObject = {
         initials: initialsInput,
-        score: timer,
+        score: timer+1,
         id: scoreCounter,
     };
 
+    //iterate so each object has unique id
     scoreCounter+=1;
 
-    //if you click on the submit button on the all done page, transition to high scores page
-    if (submitEl.matches('.submit-initials')) {
-        clearMain();
-        clearHeader();
-        var allDoneMain = document.querySelector("#main-section");
+    //dynamically alter html to look like high scores page
+    clearMain();
+    clearHeader();
+    var allDoneMain = document.querySelector("#main-section");
 
-        //create h1 for highscores
-        var h1El = document.createElement("h1");
-        h1El.innerText = "High Scores";
-        allDoneMain.appendChild(h1El);
+    //create h1 for highscores
+    var h1El = document.createElement("h1");
+    h1El.innerText = "High Scores";
+    allDoneMain.appendChild(h1El);
 
-        scoreList.push(scoreObject);
+    //add object to scoreList array
+    scoreList.push(scoreObject);
 
-        saveScores();
+    //
+    //updateScores();
 
-        //create section and divs to display high scores and initials
-        loadScores();
+    //save scoreList to local storage
+    saveScores();
 
-
-        // if timer is less than all the other values in scoreList
-
-
-        
-
-        //create go back button an link it to the entering your initials page
+    //create go back button an link it to the entering your initials page
 
 
-        //create clear high scores button
-    }  
-
+    //create clear high scores button
 }
 
 
@@ -329,5 +382,6 @@ mainSection.addEventListener("click", correctCheck);
 //when I click on the button with the class 'submit-initials, transtion to high scores page
 mainSection.addEventListener("submit", highScores);
 
-//don't forget to add event.preventdefault when you submit the form
-
+//have to set this right away so it doesn't return null as scoreObject id
+//property, but need to keep loadScores function the way it is to keep
+//iterating a unique id for scoreObjects that is stored locally
