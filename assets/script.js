@@ -266,6 +266,57 @@ var allDone = function() {
     allDoneMain.appendChild(correctOrNot);
 }
 
+//dynamically alter html for transition to highscores page
+var highScores = function(event) {
+
+    debugger;
+
+    //so the page doesn't auto reload upon submit event
+    event.preventDefault();
+
+    //get list of high scores from local storage
+    loadScores();
+
+    //take the user input and use it to help create an object to add to scoreList array
+    var initialsInput = document.querySelector("input[name='player-initials']").value;
+
+    var scoreObject = {
+        initials: initialsInput,
+        score: timer+1,
+        id: scoreCounter,
+    };
+
+    //iterate so each object has unique id
+    scoreCounter+=1;
+
+    //dynamically alter html to look like high scores page
+    clearMain();
+    clearHeader();
+    var allDoneMain = document.querySelector("#main-section");
+
+    //create h1 for highscores
+    var h1El = document.createElement("h1");
+    h1El.innerText = "High Scores";
+    allDoneMain.appendChild(h1El);
+
+    //add object to scoreList array
+    scoreList.push(scoreObject);
+
+    //save scoreList to local storage
+    saveScores();
+
+    //sort scores in scoreList
+    sortScoreList();
+
+    //display top 10 high scores from sorted list in individual divs and append
+    displayScoreDivs();
+
+    //create a go back button and only do the function if it's required, otherwise
+    //do what you have time for first. 
+
+    //create clear high scores button
+}
+
 var saveScores = function() {
     localStorage.setItem("scoreList", JSON.stringify(scoreList));
     localStorage.setItem("scoreCounter", JSON.stringify(scoreCounter));
@@ -320,58 +371,20 @@ var loadScores = function() {
         // allDoneMain.appendChild(highScoreSection)
 }
 
-var updateScores = function () {
+var sortScoreList = function () {
     //
 }
 
-//dynamically alter html for transition to highscores page
-var highScores = function(event) {
+// remove current input object from scoreList array, reduce scoreCounter by 1, 
+// either run all done or create mod' allDoneGoBack function. remember to add an event
+// listener for the button that we dynamically created, which means assign a class.
+var goback = function() {
 
-    debugger;
+};
 
-    //so the page doesn't auto reload upon submit event
-    event.preventDefault();
-
-    //get list of high scores from local storage
-    loadScores();
-
-    //take the user input and use it to help create an object to add to scoreList array
-    var initialsInput = document.querySelector("input[name='player-initials']").value;
-
-    var scoreObject = {
-        initials: initialsInput,
-        score: timer+1,
-        id: scoreCounter,
-    };
-
-    //iterate so each object has unique id
-    scoreCounter+=1;
-
-    //dynamically alter html to look like high scores page
-    clearMain();
-    clearHeader();
-    var allDoneMain = document.querySelector("#main-section");
-
-    //create h1 for highscores
-    var h1El = document.createElement("h1");
-    h1El.innerText = "High Scores";
-    allDoneMain.appendChild(h1El);
-
-    //add object to scoreList array
-    scoreList.push(scoreObject);
-
-    //
-    //updateScores();
-
-    //save scoreList to local storage
-    saveScores();
-
-    //create go back button an link it to the entering your initials page
-
-
-    //create clear high scores button
+var clearHighScores = function () {
+    
 }
-
 
 //when I click a button to move on from the question slides
 mainSection.addEventListener("click", startToQuestions);
