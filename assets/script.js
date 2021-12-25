@@ -127,9 +127,15 @@ var correctCheck = function(event) {
     //this prevents console errors because the submit initials and initials input elements are
     //also in the mainSection and will trigger that event listener, and iterate the questionNumber
     //variable higher than the number of objects in the questions array.
-    if (targetEl.matches(".submit-initials") || targetEl.matches(".initials-input")) {
+    if (!targetEl.matches(".answer")) {
         return;
     }
+
+    // ".submit-initials") || targetEl.matches(".initials-input")
+
+    // else if (!targetEl.matches(".answer")); {
+    //     return;
+    // }
 
     //check if the selected answer is correct
     else {
@@ -269,8 +275,6 @@ var allDone = function() {
 //dynamically alter html for transition to highscores page
 var highScores = function(event) {
 
-    debugger;
-
     //so the page doesn't auto reload upon submit event
     event.preventDefault();
 
@@ -305,8 +309,10 @@ var highScores = function(event) {
     //save scoreList to local storage
     saveScores();
 
-    //sort scores in scoreList
-    sortScoreList();
+    //don't need to sort a list of 1 and it would ruin my code.
+    if (scoreList.length>1) {
+        sortScoreList();
+    }
 
     //display top 10 high scores from sorted list in individual divs and append
     displayScoreDivs();
@@ -343,17 +349,6 @@ var loadScores = function() {
     }
  
 
-
-    //we dont want the html to generate when we load scores upon loading the
-    //landing page
-    // if (questionNumber===0 || !scoreList) {
-    //     return false;
-    // }
-    // else {
-    //     scoreList=localStorage.getItem("scoreList");
-    //     console.log(scoreList);
-    // }    
-
         // if timer is less than all the other values in scoreList
 
         // var numberOfScoresOnPage = 0;
@@ -372,7 +367,33 @@ var loadScores = function() {
 }
 
 var sortScoreList = function () {
-    //
+
+    var lastListElIndex = scoreList.length-2;
+    var weededOutLowScoreList = [];
+    
+    //if there are already 10 top scores, weed out the lowest
+    if (scoreList.length>10) {
+        //create a new list without the current score, if it is indeed the lowest
+        if (timer<=scoreList[lastListElIndex].score) {
+            for (var i = 0; i < (scoreList.length-2); i++) {
+                weededOutLowScoreList.push(scoreList[i]);
+            }
+        }
+        scoreList=weededOutLowScoreList;
+        scoreList.sort((a,b) => (a.score < b.score) ? 1 : (a.score===b.score) ? ((a.id > b.id)
+         ? 1 : -1) : -1);
+    }
+    
+    //otherwise, sort the list of less than 10 scores
+    else {
+        scoreList.sort((a,b) => (a.score < b.score) ? 1 : (a.score===b.score) ? ((a.id > b.id)
+         ? 1 : -1) : -1);
+    }
+}
+
+var displayScoreDivs = function() {
+    //for each item in the list, create a div, fill it with the index in the list, initials, 
+    //and score
 }
 
 // remove current input object from scoreList array, reduce scoreCounter by 1, 
