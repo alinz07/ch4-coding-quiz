@@ -368,15 +368,10 @@ var loadScores = function() {
 
 var sortScoreList = function () {
 
+    debugger;
+
     var prevListElIndex = scoreList.length-2;
     var weededOutLowScoreList = [];
-    
-
-
-//the code below is still weeding out the last element even when it's higher than the penultimate
-// I think I need to sort before I weed out.
-
-
 
     //if there are already 10 top scores, weed out the lowest
     if (scoreList.length>10) {
@@ -386,19 +381,22 @@ var sortScoreList = function () {
                 weededOutLowScoreList.push(scoreList[i]);
             }
         }
+        //otherwise, sort them, then drop the lowest
+        else {
+            scoreList.sort((a,b) => (a.score < b.score) ? 1 : (a.score===b.score) ? ((a.id > b.id)
+         ? 1 : -1) : -1);
+            for (var i = 0; i < (scoreList.length-1); i++) {
+                weededOutLowScoreList.push(scoreList[i]);
+            }
+        }
+
         scoreList=weededOutLowScoreList;
-        scoreList.sort((a,b) => (a.score < b.score) ? 1 : (a.score===b.score) ? ((a.id > b.id)
-         ? 1 : -1) : -1);
+    }    
+
+    scoreList.sort((a,b) => (a.score < b.score) ? 1 : (a.score===b.score) ? ((a.id > b.id)
+    ? 1 : -1) : -1);
         
-        localStorage.setItem("scoreList", JSON.stringify(scoreList));
-    }
-    
-    //otherwise, sort the list of less than 10 scores
-    else {
-        scoreList.sort((a,b) => (a.score < b.score) ? 1 : (a.score===b.score) ? ((a.id > b.id)
-         ? 1 : -1) : -1);
-        localStorage.setItem("scoreList", JSON.stringify(scoreList));
-    }
+    localStorage.setItem("scoreList", JSON.stringify(scoreList));
 }
 
 var displayScoreDivs = function() {
