@@ -17,6 +17,10 @@ header {
     height: fit-content;
 }
 
+header nav {
+    color: purple;
+}
+
 .main {
     width: 100%;
     margin: 5% 0 25% 0;
@@ -24,6 +28,10 @@ header {
 
 .main-for-questions {
     margin: 5% 10% 20% 25%;
+}
+
+.main-for-questions h1 {
+    font-weight: bolder;
 }
 
 .start-page-head-and-prompt {
@@ -35,6 +43,12 @@ header {
 .start-button {
     background-color: navy;
     color: white;
+}
+button {
+    height: 40px;
+    width: 100px;
+    border-radius: 5px;
+    font-size: large;
 }
 .start-button:hover {
     background-color: purple;
@@ -54,6 +68,15 @@ header {
     width: 40%
 }
 
+.answer {
+    width: 35%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    height: fit-content;
+    font-size: larger;
+}
+
 .selectable {
     background-color: navy;
     color: white;
@@ -71,13 +94,121 @@ header {
     color: gray;
     border-top: 1px solid gray;
     font-weight: initial;
+    font-size: larger;
 }
 
 .submit-initials {
   outline: none;
   border: none;
-  border-radius: 12px;
+  border-radius: 5px;
   box-shadow: 0 3px var(--grey);
   width:fit-content;
   height: fit-content;
+}
+
+.high-score-div {
+    background-color: lightgray;
+    margin: 1px;
+    width: 70%;
+    height: fit-content;
+}
+
+.go-back {
+    margin-right: 5px;
+}
+
+.clear-scores {
+    padding: 3px;
+    width: fit-content;
+}
+
+@media screen and (max-width: 1646px) {
+    .answer {
+        height: auto;
+        width: auto;
+    }
+}
+
+@media screen and (max-width: 787px) {
+    .start-page-head-and-prompt {
+        width: 80%;
+    }
+
+    .q-and-a {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .q-and-a h1 {
+        font-size: x-large;
+    }
+
+    .q-and-a ol {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .correctness {
+        text-align: center;
+    }
+
+    .main-for-questions {
+        margin: 0;
+    }
+
+    .answer {
+        width: 300px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    header {
+        display: block;
+        margin: auto;
+        text-align: center;
+    }
+
+    header > * {
+        margin: 10px;
+    }
+
+    body {
+        margin-right: 30px;
+    }
+
+    .main-for-questions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .main-for-questions div {
+        width: fit-content;
+    }
+
+    .q-and-a {
+        width: 100%;
+    }
+
+    button {
+        height: 40px;
+    }
+
+    .submit-initials {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .high-score-div {
+        width: 100%;
+    }
+
+    .clear-scores {
+        height: fit-content;
+    }
 }

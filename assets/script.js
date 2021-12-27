@@ -70,6 +70,10 @@ var startToQuestions = function (event) {
     }
 }
 
+var clearMain = function() {
+    mainSection.innerHTML="";
+}
+
 var questionAndAnswers = function(questionNumber) {
 
     mainSection.className = "main-for-questions";
@@ -109,12 +113,13 @@ var questionAndAnswers = function(questionNumber) {
 
 var startTimer = function() {
     var timerInterval = setInterval(function() {
-        if (questionNumber < 6) {
+        if (questionNumber < 6 && timer>=0) {
             myTimer.innerHTML = "Time: " + timer;
             timer --;
         }
-        else {
+        else if (questionNumber >5 || timer<=0) {
             clearInterval(timerInterval);
+            allDone();
         }
     }, 1000)
 }
@@ -130,12 +135,6 @@ var correctCheck = function(event) {
     if (!targetEl.matches(".answer")) {
         return;
     }
-
-    // ".submit-initials") || targetEl.matches(".initials-input")
-
-    // else if (!targetEl.matches(".answer")); {
-    //     return;
-    // }
 
     //check if the selected answer is correct
     else {
@@ -153,6 +152,10 @@ var correctCheck = function(event) {
             correctTransitionHelper();
             var correctnessDiv = document.querySelector(".correctness");
             correctnessDiv.innerHTML = "Wrong!";
+            timer-=10;
+            if (timer <=0) {
+                allDone();
+            }
         }
 
         //if it was the last question in the quiz, we want to transition to all done page
@@ -182,10 +185,6 @@ var correctTransitionHelper = function() {
         changeQuestion();
         createCorrectnessDiv();
     }
-}
-
-var clearMain = function() {
-    mainSection.innerHTML="";
 }
 
 var clearHeader = function() {
@@ -319,13 +318,16 @@ var highScores = function(event) {
 
     //create a go back button and only do the function if it's required, otherwise
     //do what you have time for first. 
+    var goBackButton = document.createElement("button");
+    goBackButton.className = 'selectable go-back';
+    goBackButton.innerText = 'Go back';
+    mainSection.appendChild(goBackButton);
 
     //create clear high scores button
-}
-
-var saveScores = function() {
-    localStorage.setItem("scoreList", JSON.stringify(scoreList));
-    localStorage.setItem("scoreCounter", JSON.stringify(scoreCounter));
+    var clearScoresButton = document.createElement("button");
+    clearScoresButton.className = 'selectable clear-scores';
+    clearScoresButton.innerText = 'Clear high scores';
+    mainSection.appendChild(clearScoresButton);
 }
 
 var loadScores = function() {
@@ -347,28 +349,14 @@ var loadScores = function() {
     else {
         scoreList = JSON.parse(scoreList);
     }
- 
+}
 
-        // if timer is less than all the other values in scoreList
-
-        // var numberOfScoresOnPage = 0;
-        // var allDoneMain = document.querySelector("#main-section");
-        // var highScoreSection = document.createElement("section");
-
-        // for (var i=0; i<10; i++) {
-
-        //     var scoreDiv = document.createElement("div");
-        //     //find a way to add rank. initials - score
-        //     scoreDiv.innerHTML = ""
-        //     highScoreSection.append(scoreDiv);
-        // }
-
-        // allDoneMain.appendChild(highScoreSection)
+var saveScores = function() {
+    localStorage.setItem("scoreList", JSON.stringify(scoreList));
+    localStorage.setItem("scoreCounter", JSON.stringify(scoreCounter));
 }
 
 var sortScoreList = function () {
-
-    debugger;
 
     var prevListElIndex = scoreList.length-2;
     var weededOutLowScoreList = [];
@@ -402,6 +390,19 @@ var sortScoreList = function () {
 var displayScoreDivs = function() {
     //for each item in the list, create a div, fill it with the index in the list, initials, 
     //and score
+    var allDoneMain = document.querySelector("#main-section");
+    var highScoreSection = document.createElement("section");
+
+    for (var i=0; i<scoreList.length; i++) {
+
+        var scoreDiv = document.createElement("div");
+        scoreDiv.className = "high-score-div";
+        //find a way to add rank. initials - score
+        scoreDiv.innerHTML = "<h3 class = 'scores'>" + (i+1) + ". " + scoreList[i].initials + ' - ' + scoreList[i].score; "</h3>";
+        highScoreSection.appendChild(scoreDiv);
+        }
+
+        allDoneMain.appendChild(highScoreSection);
 }
 
 // remove current input object from scoreList array, reduce scoreCounter by 1, 
@@ -423,7 +424,3 @@ mainSection.addEventListener("click", correctCheck);
 
 //when I click on the button with the class 'submit-initials, transtion to high scores page
 mainSection.addEventListener("submit", highScores);
-
-//have to set this right away so it doesn't return null as scoreObject id
-//property, but need to keep loadScores function the way it is to keep
-//iterating a unique id for scoreObjects that is stored locally
