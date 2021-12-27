@@ -1,7 +1,7 @@
 # ch4-coding-quiz
 <br/>
 
-## **Link** to web application: https://alinz07.github.io/ch4-coding-quiz/ 
+## **Link** to web application:  
 
 ## **Link** to project repository: https://github.com/alinz07/ch4-coding-quiz 
 <br/>
